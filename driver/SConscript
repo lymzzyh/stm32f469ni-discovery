@@ -3,10 +3,7 @@
 from building import *
 
 cwd     = GetCurrentDir()
-src     = Split('''
-board.c
-drv_uart.c
-''')
+src     = []
 CPPPATH = [cwd]
 
 if GetDepend('RT_USING_PIN'):
