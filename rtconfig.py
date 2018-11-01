@@ -9,20 +9,25 @@ ABI             = 'hard'
 # toolchains options
 CROSS_TOOL      = 'gcc' #iar keil
 RTT_ROOT        = 'rt-thread'
-GCC_PATH        = ''
+GCC_PATH        = os.getenv('RTT_EXEC_PATH')
 IAR_PATH        = ''
-MDK_PATH        = ''
+MDK_PATH        = 'C:/Keil_v5'
 ENABLE_ARMCLANG = True
 
 # build options
 BUILD = 'debug'
 #BUILD = 'release'
 
+# projetc options
+MDK5_TEMPLATE_FILE = 'project/mdk/mdk5/template.uvprojx'
+MDK4_TEMPLATE_FILE = 'project/mdk/mdk4/template.uvprojx'
+IAR_TEMPLATE_FILE  = 'project/iar/template.ewp'
+
 if os.getenv('RTT_ROOT'):
-    RTT_ROOT = os.getenv('RTT_ROOT')
+    RTT_ROOT    = os.getenv('RTT_ROOT')
 
 if os.getenv('RTT_CC'):
-    CROSS_TOOL = os.getenv('RTT_CC')
+    CROSS_TOOL  = os.getenv('RTT_CC')
 
 if  CROSS_TOOL  == 'gcc' :
     PLATFORM    = 'gcc'
@@ -58,7 +63,7 @@ if PLATFORM == 'gcc':
     DEVICE += ' -mthumb -mfpu=' + FPU
     DEVICE += ' -mfloat-abi=' + ABI
 
-    CFLAGS = DEVICE + '-ffunction-sections -fdata-sections -std=c99'
+    CFLAGS = DEVICE + ' -ffunction-sections -fdata-sections'
 
     AFLAGS = ' -c' + DEVICE + ' -x assembler-with-cpp -Wa,-mimplicit-it=thumb '
 
@@ -72,7 +77,7 @@ if PLATFORM == 'gcc':
         AFLAGS += ' -gdwarf-2'
     else:
         CFLAGS += ' -Os -Otime'
-
+        
     CXXFLAGS = CFLAGS
 
     POST_ACTION = OBJCPY + ' -O binary $TARGET rtthread.bin\n' + SIZE + ' $TARGET \n'
